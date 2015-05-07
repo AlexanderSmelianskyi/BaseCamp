@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <Windows.h>
 #include "Interface.h"
-#pragma warning(disable : 4996)
 
 #define DllImport __declspec( dllimport )
 //GameIsFinished

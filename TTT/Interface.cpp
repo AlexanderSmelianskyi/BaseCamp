@@ -48,6 +48,7 @@ void PrintHelp(size_t message) {
 	  system("pause");
 	  PrintField(game_field);
 	  PrintMoves(game_field);
+	  fflush(stdin);
 	  break;
     }
 	case 2: {
@@ -57,6 +58,7 @@ void PrintHelp(size_t message) {
       system("pause");
       PrintField(game_field);
       PrintMoves(game_field);
+	  fflush(stdin);
       break;
     }
 	case 3: {
@@ -71,12 +73,6 @@ void PrintHelp(size_t message) {
       printf("%c%c%c%c%c%c%c\n",201,205,205,205,205,205,187);
       printf("%cN    %c\n",186,186);
       printf("%c    T%c\n",186,186);
-      printf("%c%c%c%c%c%c%c\n",200,205,205,205,205,205,188);
-
-      printf("And press Enter then\n");
-      printf("%c%c%c%c%c%c%c\n",201,205,205,205,205,205,187);
-      printf("%c     %c\n",186,186);
-      printf("%c <%c%c %c\n",186,205,188,186);
       printf("%c%c%c%c%c%c%c\n",200,205,205,205,205,205,188);
       break;
     }
@@ -120,12 +116,11 @@ char choice;
   do {
     ++bad_choice;
 	if(bad_choice < 3) {
-      printf("Press 'y' or 'n' and 'Enter' button then\n");
+      printf("\nPress 'y' or 'n'");
 	} else {
 	PrintHelp(3);
 	}
-	fflush(stdin);
-    scanf("%c", &choice);
+	choice = getch();
   } while (choice != 'y' && choice != 'Y' &&
 		   choice != 'n' && choice != 'N');
   printf("\n");
