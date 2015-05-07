@@ -5,7 +5,7 @@ short GameIsFinished(const short *game_field) {
   size_t positions[ORDER * 2 + 2][ORDER] = {
   {0,1,2},{3,4,5},{6,7,8}, //rows
   {0,3,6},{1,4,7},{2,5,8}, //columns
-  {0,4,8},{2,4,6}		   //diagonals
+  {0,4,8},{2,4,6}           //diagonals
   };
 
   short win_flag;
@@ -22,7 +22,7 @@ short GameIsFinished(const short *game_field) {
     }
 
     if(win_flag == 1) {
-	  //winner was determinated
+      //winner was determinated
       return game_field[positions[i][2]];
     }
   }
@@ -43,16 +43,16 @@ short MiniMaxAlg(short *game_field, short current_player) {
   for(size_t i = 0; i < 9; ++i) {
     if(game_field[i] == EMPTY) {
       game_field[i] = current_player;
-	  /*PrintField(game_field);
-	  system("pause");*/
-	  //change player
+      /*PrintField(game_field);
+      system("pause");*/
+      //change player
       move_score = -MiniMaxAlg(game_field, current_player*-1);
-	  //if this move is better then others
+      //if this move is better then others
       if(move_score > best_score) {
       best_score = move_score;
       move = i;
       }
-	//remove cross/zero from current position
+    //remove cross/zero from current position
     game_field[i] = EMPTY;
     }
   }
@@ -68,13 +68,13 @@ void ComputerMove(short *game_field) {
   //try every position
   for(size_t i = 0; i < 9; ++i) {
     if(game_field[i] == 0) {
-	  //place zero on current position
+      //place zero on current position
       game_field[i] = ZERO;
-	  //check the result of this move
+      //check the result of this move
       move_score = -MiniMaxAlg(game_field, CROSS);
-	  //remove zero from current position
+      //remove zero from current position
       game_field[i] = EMPTY;
-	  //if this move is better then others
+      //if this move is better then others
       if(move_score > best_score) {
         best_score = move_score;
         move = i;

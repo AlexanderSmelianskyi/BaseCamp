@@ -30,12 +30,12 @@ void PrintMoves(short *field)
   {
     if (field[i] == EMPTY) {
       printf("| %d ", i + 1);
-	} else {
+    } else {
       printf("| %c ", ' ');
-	}
-	if ((i + 1) % ORDER == 0) {
-	  printf("|\n-------------\n");
-	}
+    }
+    if ((i + 1) % ORDER == 0) {
+      printf("|\n-------------\n");
+    }
   }
 }
 
@@ -44,25 +44,25 @@ void PrintHelp(size_t message) {
     case 1: {
       system("cls");
       printf("Wrong move! Position is busy!\n");
-	  PrintMoves(game_field);
-	  system("pause");
-	  PrintField(game_field);
-	  PrintMoves(game_field);
-	  fflush(stdin);
-	  break;
+      PrintMoves(game_field);
+      system("pause");
+      PrintField(game_field);
+      PrintMoves(game_field);
+      fflush(stdin);
+      break;
     }
-	case 2: {
+    case 2: {
       system("cls");
       printf("Out of range!\n");
       printf("Range is: %d - %d\n", 1, FIELD_SIZE);
       system("pause");
       PrintField(game_field);
       PrintMoves(game_field);
-	  fflush(stdin);
+      fflush(stdin);
       break;
     }
-	case 3: {
-	  system("cls");
+    case 3: {
+      system("cls");
       printf("Please press this button:\n");
       printf("%c%c%c%c%c%c%c\n",201,205,205,205,205,205,187);
       printf("%cY    %c\n",186,186);
@@ -76,10 +76,10 @@ void PrintHelp(size_t message) {
       printf("%c%c%c%c%c%c%c\n",200,205,205,205,205,205,188);
       break;
     }
-	default: {
-	  printf("Unexpected error\n");
-	  break;
-	}
+    default: {
+      printf("Unexpected error\n");
+      break;
+    }
   }
 }
 
@@ -96,15 +96,15 @@ void PlayerMove(short *game_field) {
 
 bool MoveIsCorrect(short *game_field, short move) {
   if(move < 0 || move > 8) {
-	//Out of range
-	PrintHelp(2);
+    //Out of range
+    PrintHelp(2);
     return false;
   }
   if(game_field[move] == EMPTY) {
     return true;
   } else {
     //Wrong move
-	PrintHelp(1);
+    PrintHelp(1);
     return false;
   }
 }
@@ -115,14 +115,14 @@ char choice;
   printf("Do you want to move first? ");
   do {
     ++bad_choice;
-	if(bad_choice < 3) {
+    if(bad_choice < 3) {
       printf("\nPress 'y' or 'n'");
-	} else {
-	PrintHelp(3);
-	}
-	choice = getch();
+    } else {
+    PrintHelp(3);
+    }
+    choice = getch();
   } while (choice != 'y' && choice != 'Y' &&
-		   choice != 'n' && choice != 'N');
+           choice != 'n' && choice != 'N');
   printf("\n");
 
   unsigned short turn_control;
