@@ -53,8 +53,8 @@ void PrintHelp(size_t message) {
     }
     case 2: {
       system("cls");
-      printf("Out of range!\n");
-      printf("Range is: %d - %d\n", 1, FIELD_SIZE);
+      printf("Wrong button!\n");
+      printf("You cin use only %d - %d button to make move\n", 1, FIELD_SIZE);
       system("pause");
       PrintField(game_field);
       PrintMoves(game_field);
@@ -84,10 +84,11 @@ void PrintHelp(size_t message) {
 }
 
 void PlayerMove(short *game_field) {
-  short move = 0;
+  char move = 0;
   do {
     printf("\nYour move: ");
-    scanf("%d", &move);
+    move = getch();
+    move -= '0';
     --move;
   printf("\n");
   } while (!MoveIsCorrect(game_field, move));
@@ -125,18 +126,34 @@ char choice;
            choice != 'n' && choice != 'N');
   printf("\n");
 
-  unsigned short turn_control;
-
   switch (choice) {
     case 'y': case 'Y': {
-      turn_control = 1; 
-      break;
+      return 1;
     }
     case 'n': case 'N': {
-      turn_control = 2; 
-      break;
+      return 2;
     }
   }
+}
 
-  return turn_control;
+char SelectMode() {
+  char mode = '0';
+  system("cls");
+  printf("Select game mode:\n1. Easy\n2. Medium\n3. Hard\n");
+  do {
+    mode = getch();
+  } while (mode < '1' || mode > '3');
+  printf("\n");
+
+  switch (mode) {
+    case '1': {
+      return 1; 
+    }
+    case '2': {
+      return 2;
+    }
+    case '3': {
+      return 3;
+    }
+  }
 }

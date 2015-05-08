@@ -27,10 +27,10 @@ void PrintMoves(short *);
 //1 - wrong move
 //2 - out fo range
 //3 - wrong game start
-void PrintHelp(size_t message);
+void PrintHelp(size_t);
 //Allow player to make moves
 //Parameters: pointer to game field
-void PlayerMove(short *game_field);
+void PlayerMove(short *);
 //Checks if move is correct (position is free) and move is not out of range
 //Parameters: pointer to game field
 //              move number
@@ -39,3 +39,6 @@ bool MoveIsCorrect(short *, short);
 //Let player to make choice who will make move first
 //returns "turn controller"
 short WhoIsFirst();
+//Let player to make choice to play easy or hard mode
+//returns selected mode
+char SelectMode();

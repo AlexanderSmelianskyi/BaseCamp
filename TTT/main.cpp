@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include <Windows.h>
 #include "Interface.h"
 
@@ -7,16 +8,16 @@
 //GameIsFinished
 typedef DllImport short (*LPFNDLLGIS) (const short *);
 //MiniMaxAlg
-typedef DllImport short (*LPFNDLLMMA) (const short *, short);
+typedef DllImport void (*LPFNDLLECM) (short *);
 //ComputerMove
-typedef DllImport void (*LPFNDLLCM) (const short *);
+typedef DllImport void (*LPFNDLLCM) (short *);
 
 //Handle to DLL
 HINSTANCE h_dll;
 //GameIsFinished pointer
 LPFNDLLGIS gis;
-//MiniMaxAlg pointer
-LPFNDLLMMA mma;
+//easyComputerMove pointer
+LPFNDLLECM ecm;
 //ComputerMove pointer
 LPFNDLLCM cm;
 
@@ -24,16 +25,30 @@ short game_field[FIELD_SIZE] = {EMPTY};
  
 //Starts game using LIB and DLL functions
 void StartGame() {
+  srand(time(NULL));
   //LIB usage
-  unsigned short turn_control = WhoIsFirst();
-
+  char turn_control = WhoIsFirst();
+  char mode = SelectMode();
   for(size_t i = 0; i < FIELD_SIZE; ++i) {
     //DLL usage
     if(gis(game_field) != 0) {
       break;
     }
     if((i+turn_control) % 2 == 0) {
-      cm(game_field);
+      //easy
+      if(mode == 1) ecm(game_field);
+      //medium(1/3 of easy moves)
+      if(mode == 2) {
+        if(rand() % 10 < 3) {
+          ecm(game_field);
+        } else {
+          cm(game_field);
+        }
+      }
+      //hardmode(if you want to lose few times)
+      if(mode == 3) {
+        cm(game_field);
+      }
     //LIB usage
     } else {
       PrintField(game_field);
@@ -62,21 +77,28 @@ void StartGame() {
   }
 }
 
-int main() {
+bool InitializeDll() {
   //Loading DLL
   h_dll = LoadLibrary(TEXT("TicTacToe_DLL"));
   if (h_dll)
   {
     gis = (LPFNDLLGIS)GetProcAddress(h_dll, "GameIsFinished");
-    mma = (LPFNDLLMMA)GetProcAddress(h_dll, "MiniMaxAlg");
+    ecm = (LPFNDLLECM)GetProcAddress(h_dll, "EasyComputerMove");
     cm = (LPFNDLLCM)GetProcAddress(h_dll, "ComputerMove");
-    if(gis && mma && cm) {
-      printf("Functions were successfully loaded!\n\n");
-      //Start the game!
-      StartGame();
+    if(gis && ecm && cm) {
+      printf("DLL functions were successfully loaded!\n\n");
+      return true;
     } else {
-      printf("No library => No game\n");
+      return false;
     }
+  }
+}
+
+int main() {
+  if(InitializeDll()) {
+    StartGame();
+  } else {
+    printf("No library => No game\n");
   }
   system("pause");
 }

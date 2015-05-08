@@ -56,7 +56,6 @@ short MiniMaxAlg(short *game_field, short current_player) {
     game_field[i] = EMPTY;
     }
   }
-  //if move was not changed - score is 0
   if(move == -1) return 0;
   return best_score;
 }
@@ -82,5 +81,42 @@ void ComputerMove(short *game_field) {
     }
   }
   //when best move was found - do it
-  game_field[move] = 1;
+  game_field[move] = ZERO;
+}
+
+void RandomMove(short *game_field) {
+  int move = rand() % FIELD_SIZE;
+  while (game_field[move] != EMPTY) {
+    move = rand() % FIELD_SIZE;
+  }
+  game_field[move] = ZERO;
+  return;
+}
+
+bool NextMoveWin(short *game_field, short current_player) {
+  short result;
+  for(size_t i = 0; i < FIELD_SIZE; ++i) {
+    if(game_field[i] == EMPTY) {
+      game_field[i] = current_player;
+      result = GameIsFinished(game_field);
+      //if current player can win in 1 move
+      if(result == current_player) {
+        game_field[i] = ZERO;
+        return true;
+      }
+      game_field[i] = EMPTY;
+    }
+  }
+  return false;
+}
+
+void EasyComputerMove(short *game_field) {
+  if(NextMoveWin(game_field, ZERO)){
+      return;
+  }
+  if(NextMoveWin(game_field, CROSS)){
+      return;
+  }
+  RandomMove(game_field);
+  return;
 }
